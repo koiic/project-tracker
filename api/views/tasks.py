@@ -24,7 +24,6 @@ class TaskResource(Resource):
 		data = request.get_json()
 		title = data.get('title')
 		formatted_date = convert_date_to_date_time(data['due_date'])
-		print(type(formatted_date))
 		schema = TaskSchema()
 		project_id = data['projectId']
 		project = Project.get_or_404(project_id)
@@ -43,8 +42,6 @@ class TaskResource(Resource):
 			data['task_assignees'] = user_list
 		else:
 			data['task_assignees'] = []
-		print(data['task_assignees'], '+++++++++++')
-		print(data['task_assignees'], '8888888>>>>>')
 		assignee_ids = data['task_assignees'] if data['task_assignees'] is not None else []
 		del data['task_assignees']
 		task_data = schema.load_object_into_schema(data)
@@ -55,7 +52,6 @@ class TaskResource(Resource):
 		task.due_date = data['due_date']
 		task.task_assignees = assignee_ids
 		task.project_id = project.id
-		print(project.assignees, '====>>>')
 		task.save()
 
 		task.save()
@@ -101,7 +97,6 @@ class SingleTaskResource(Resource):
 				del request_data['task_assignees']
 				data = schema.load_object_into_schema(request_data, partial=True)
 				data['task_assignees'] = assignees
-				print('i got here', data)
 				task.update_(**data)
 		else:
 			data = schema.load_object_into_schema(request_data, partial=True)

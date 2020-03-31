@@ -20,16 +20,77 @@ The **Project Tracker application** keeps tracks of users tasks based on priorit
  * MARSHMALLOW
   
  ## Implementation Details
- 1. Managing project
-    - creating a new project
-        - url : http://localhost:5000/api/v1/5000/projects
+ 1.ENDPOINTS
+ 
+    - creating a new project (POST)
+        - url : https://flask-project-tracker.herokuapp.com/api/v1/projects
+        - example request data  
+            - `{
+                "title":"user management pipeline",
+                 "description": "user authentication",
+                 "due_date": "2020-07-23 00:00:00",
+                  "assignees": [1,2] -> user Id 
+             }`
+           
+    - creating a new task (POST)
+      - url : https://flask-project-tracker.herokuapp.com/api/v1/tasks
         - example request data 
-        - `{
-            "title":"mevron 1003",
-             "description": "user authentication",
-             "due_date": "2020-07-23 00:00:00",
-              "assignees": []
-	     }`
+            - `{
+                "title":"create a new authenticate user",
+                 "description": "user authentication",
+                 "due_date": "2020-07-23 00:00:00",
+                  "assignees": []
+             }`
+             
+     - update task (PATCH)
+      - url : https://flask-project-tracker.herokuapp.com/api/v1/tasks/{task_id}
+        - example request data 
+            - `{
+                "title":"update title"
+             }`
+             
+    - update project (PATCH)
+        - url : https://flask-project-tracker.herokuapp.com/api/v1/projects/{project_id}
+            - example request data 
+                - `{
+                    "title":"update project"
+                 }`
+                 
+     - register user (POST)
+      - url : https://flask-project-tracker.herokuapp.com/api/v1/auth/register
+        - example request data 
+            - `{
+                "name":"test user",
+                 "email": "test@example.com",
+                  "password":"test"
+             }`
+    
+    - authenticate user (login) (POST)
+      - url : https://flask-project-tracker.herokuapp.com/api/v1/auth/login
+        - example request data 
+            - `{
+                 "email": "test@example.com",
+                  "password":"test"
+             }`
+             
+     - get all projects (GET)
+        - url : https://flask-project-tracker.herokuapp.com/api/v1/projects
+        
+    - get single projects (GET)
+        - url : https://flask-project-tracker.herokuapp.com/api/v1/projects/{project_id}
+        
+     - get all tasks (GET)
+        - url : https://flask-project-tracker.herokuapp.com/api/v1/tasks
+        
+    - get single tasks (GET)
+        - url : https://flask-project-tracker.herokuapp.com/api/v1/tasks/{task_id}
+       
+                     
+       
+                     
+                 
+                 
+    
 
 
 ## Set Up Development With Docker 
@@ -60,24 +121,21 @@ To stop the running containers run the command `docker-compose down`
 2. run `docker stop ${image-id}`
 2. run `docker rm ${image-id}`
 
-**URGENT WARNING** PLEASE DO NOT RUN THE CLEAN-UP COMMAND ABOVE UNLESS YOU ARE ABSOLUTELY SURE YOU ARE DONE WITH THAT DEVELOPMENT SESSION AND HAVE NO DATA THAT WOULD BE LOST IF CLEAN-UP IS DONE!
 
 
 ### Alternative Development set up
     ##### BACKEND SET UP
      -   Clone the favorite-things repo and cd into it:
-            git clone https://github.com/koiic/favorite-things
+            git clone https://github.com/koiic/project-tracker.git
         
-    -   CD into server folder 
+    -   CD into the project-tracker folder 
     
     -   Create a .env file using the sample from .env.sample
     
     -   Check that python 3 is installed:
     
-        ```
-        python --version
-        >> Python 3.7
-        ```
+        -> python --version
+            . Python 3.7
     
     -   Install pipenv:
     
@@ -86,91 +144,58 @@ To stop the running containers run the command `docker-compose down`
         ```
     
     -   Check pipenv is installed:
-        ```
-        pipenv --version
-        >> pipenv, version 2018.6.25
-        ```
-    -   Check that mysql is installed:
+
+        -> pipenv --version`
+            . pipenv, version 2018.6.25
+        
+    -   Check that postgres is installed:
     
-        ```
-        postgresql --version
-        postgres (PostgreSQL) 12.2
-        ```
+
+        -> postgres --version
+           .  postgres (PostgreSQL) 12.2
+
     
-    -   Install dependencies:
+    -  create virtual environment and  Install dependencies:
     
-        ```
-        pipenv install
-        ```
+        -> pipenv shell
+        -> pipenv install
+
     
     
     -   Make a copy of the .env.sample file  and rename it to .env and update the variables accordingly:
     
-        ```
         FLASK_ENV = "development" # Takes either development, production, testing
         DATABASE_URI = "postgres://YOUR_DB_USER:YOUR_DB_PASSWORD@YOUR_HOST/YOUR_DATABASE_NAME" # Development and production mySql db uri
         TEST_DATABASE_URI = "mysql+pymsql://YOUR_DB_USER:YOUR_DB_PASSWORD@YOUR_HOST/YOUR_TEST_DATABASE_NAME" # Testing mySql db uri
         JWT_SECRET_KEY_STAGING = "" # your prefered secret key
         API_BASE_URL_V1 = "" # The base url for V1 of the API
-        ```
-    
-    -   Activate a virtual environment:
-    
-        ```
-        pipenv shell
-        ```
-    
-    -   Apply migrations:
-        ```
-        flask db init or python manage.py db init
-        ```
-    
-        ```
-        flask db upgrade or python manage.py db upgrade
-        ```
         
-        ```
-        flask db migrate or python manage.py db migrate
-        ```
+    
+    -   initiliaze db and Apply migrations:
+
+        -> flask db init or python manage.py db init
+        
+        -> flask db upgrade or python manage.py db upgrade
+        
+        -> flask db migrate or python manage.py db migrate
     
     
     
     -   Run the application with either commands:
     
-        ```
-        python manage.py runserver 
-        ```
+        -> python manage.py runserver 
         or
-        ```
-        flask run
-        ```
-    
-    -   Should you make changes to the database models, run migrations as follows
-    
-        -   Migrate database:
-    
-            ```
-            flask db migrate
-            ```
-    
-        -   Upgrade to new structure:
-            ```
-            flask db upgrade
-            ```
+        -> flask run
+
     
     -   Deactivate the virtual environment once you're done:
-            ```
-            exit
-            ```  
+            -> exit
 
  ##### TEST RUNNER
-    -   CD into server folder 
     
     -   run test with the command below:
     
-        ```
-        pytest
-        ```
+        -> pytest
  
  
  

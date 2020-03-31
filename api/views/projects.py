@@ -34,7 +34,6 @@ class ProjectResource(Resource):
 		convert_date_to_date_time(data['due_date'])
 
 		data['assignees'] = user_list if user_list is not None else []
-		print('------------<><><><>', data['assignees'], user_list)
 		assignee_ids = data['assignees']
 		del data['assignees']
 		schema = ProjectSchema()
@@ -45,9 +44,7 @@ class ProjectResource(Resource):
 		project.description = data['description']
 		project.due_date = data['due_date']
 		project.assignees = assignee_ids
-		print(project.assignees, '====>>>')
 		project.save()
-
 		return response('success', message=success_messages['created'].format('Project'), data=schema.dump(project).data, status_code=201)
 
 	@jwt_required
@@ -64,8 +61,8 @@ class ProjectResource(Resource):
 			raise ValidationError({'message': 'No Project Found'})
 		projects_list = schema.dump(projects).data
 		return response('success', success_messages['retrieved'].format('Projects'), projects_list)
-	#
-#
+
+
 @flask_api.route('/projects/<int:project_id>')
 class SingleProjectResource(Resource):
 	""" Resource for single Project"""
@@ -86,7 +83,6 @@ class SingleProjectResource(Resource):
 			data = schema.load_object_into_schema(request_data, partial=True)
 			data['assignees'] = assignees
 		else:
-			print('request-data', request_data)
 			data = schema.load_object_into_schema(request_data, partial=True)
 		project.update_(**data)
 		return response('success', message=success_messages['updated'].format('Project'), data=schema.dump(project).data, status_code=200)
@@ -124,4 +120,3 @@ class SingleProjectResource(Resource):
 			'status':  'success',
 			'message': 'Project deleted successfully'
 		}
-

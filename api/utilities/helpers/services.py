@@ -13,7 +13,6 @@ def assign_user(user_list):
 	users = []
 	if user_list and len(user_list) > 0:
 		for user_id in user_list:
-			print('the users', user_id)
 			user = User.find_by_id(user_id)
 			if not user:
 				continue

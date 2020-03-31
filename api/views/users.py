@@ -26,7 +26,6 @@ class UserSignUpResource(Resource):
 		An endpoint to register a user
 		"""
 		request_data = request.get_json()
-		print('=====>', request_data)
 		user_data = schema.load_object_into_schema(request_data)
 
 		email = request_data.get('email')
