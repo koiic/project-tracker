@@ -1,2 +1,2 @@
-web: gunicorn project-tracker:manage
+web: gunicorn api:app
 release:  python manage.py db upgrade
