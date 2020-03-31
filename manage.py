@@ -37,4 +37,4 @@ def entrypoint():
 server = Server(app.wsgi_app)
 
 if __name__ == '__main__':
-    server.serve(port=5000, host='0.0.0.0')
+    manager.run()
