@@ -86,45 +86,7 @@ The **Project Tracker application** keeps tracks of users tasks based on priorit
     - get single tasks (GET)
         - url : https://flask-project-tracker.herokuapp.com/api/v1/tasks/{task_id}
        
-                     
-       
-                     
-                 
-                 
-    
-
-
-## Set Up Development With Docker 
-
-1. Download Docker from [here](https://docs.docker.com/)
-2. Set up an account on Docker
-3. Install Docker after download
-4. Go to your terminal run the command `docker login`
-5. Input your Docker email and password
-
-To setup for development with Docker after cloning the repository please do/run the following commands in the order stated below:
-
--   `cd <project dir>` to check into the dir
--   `docker-compose build` to build the application images
--   `docker-compose up -d` to start the api after the previous command is successful
-
-The `docker-compose build` command builds the docker image where the api and its postgres database would be situated.
-Also this command does the necessary setup that is needed for the API to connect to the database.
-
-The `docker-compose up -d` command starts the application while ensuring that the postgres database is seeded before the api starts.
-
-To stop the running containers run the command `docker-compose down`
-
-
-**To Clean Up After using docker do the following**
-
-1. run this command `docker ps` to view all docker images
-2. run `docker stop ${image-id}`
-2. run `docker rm ${image-id}`
-
-
-
-### Alternative Development set up
+###  Development set up
     ##### BACKEND SET UP
      -   Clone the favorite-things repo and cd into it:
             git clone https://github.com/koiic/project-tracker.git
@@ -192,14 +154,30 @@ To stop the running containers run the command `docker-compose down`
     -   Deactivate the virtual environment once you're done:
             -> exit
 
- ##### TEST RUNNER
     
-    -   run test with the command below:
-    
-        -> pytest
- 
- 
- 
+
+
+## Set Up Development With Docker 
+
+1. Download Docker from [here](https://docs.docker.com/)
+2. Set up an account on Docker
+3. Install Docker after download
+4. Go to your terminal run the command `docker login`
+5. Input your Docker email and password
+
+To setup for development with Docker after cloning the repository please do/run the following commands in the order stated below:
+
+-   `cd <project dir>` to check into the dir
+-   `docker-compose build` to build the application images
+-   `docker-compose up -d` to start the api after the previous command is successful
+
+The `docker-compose build` command builds the docker image where the api and its postgres database would be situated.
+Also this command does the necessary setup that is needed for the API to connect to the database.
+
+The `docker-compose up -d` command starts the application while ensuring that the postgres database is seeded before the api starts.
+
+To stop the running containers run the command `docker-compose down`
+
   ### Step taken to autolint code
 
     For the server side I made use of PYLINT:
