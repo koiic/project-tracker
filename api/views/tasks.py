@@ -10,7 +10,7 @@ from api.utilities.helpers.services import convert_date_to_date_time, check_assi
 from api.utilities.helpers.response import response
 from api.utilities.messages.serialization import serialization_messages
 from api.utilities.messages.success import success_messages
-from main import flask_api, db
+from main import flask_api
 
 
 @flask_api.route('/tasks')
