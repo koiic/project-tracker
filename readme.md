@@ -39,6 +39,7 @@ The **Project Tracker application** keeps tracks of users tasks based on priorit
                 "title":"create a new authenticate user",
                  "description": "user authentication",
                  "due_date": "2020-07-23 00:00:00",
+                 "projectId": 1
                   "assignees": []
              }`
              
