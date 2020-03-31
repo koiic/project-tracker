@@ -22,7 +22,7 @@ def initialize_error_handlers(application):
 
 # function to create app
 def create_app(config):
-	print('===>>> ', config.SQLALCHEMY_DATABASE_URI)
+	print('===>>> ', config.FLASK_ENV)
 	app = Flask(__name__)
 	CORS(app)
 	app.config.from_object(config)
