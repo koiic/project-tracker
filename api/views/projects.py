@@ -36,6 +36,8 @@ class ProjectResource(Resource):
 
 		data['assignees'] = user_list if user_list is not None else []
 		print('------------<><><><>', data['assignees'], user_list)
+		assignee_ids = data['assignees']
+		del data['assignees']
 		schema = ProjectSchema()
 		project_data = schema.load_object_into_schema(data)
 
@@ -43,7 +45,7 @@ class ProjectResource(Resource):
 		project.title = data['title']
 		project.description = data['description']
 		project.due_date = data['due_date']
-		project.assignees = data['assignees']
+		project.assignees = assignee_ids
 		print(project.assignees, '====>>>')
 		project.save()
 
@@ -75,14 +77,18 @@ class SingleProjectResource(Resource):
 		request_data = request.get_json()
 		user = get_jwt_identity()
 		project = Project.get(project_id)
-		if 'assignees' in request_data:
-			user_list = assign_user(request_data.get('assignees'))
-			request_data['assignees'] = user_list if user_list is not None else []
 		if user.get('id') != project.created_by:
 			raise ValidationError({'message': 'Unauthorized user, you cannot perform this operation'})
 		schema = ProjectSchema(context={'id': project_id})
-		print('request-data', request_data)
-		data = schema.load_object_into_schema(request_data, partial=True)
+		if 'assignees' in request_data:
+			user_list = assign_user(request_data.get('assignees'))
+			assignees = user_list if user_list is not None else []
+			del request_data['assignees']
+			data = schema.load_object_into_schema(request_data, partial=True)
+			data['assignees'] = assignees
+		else:
+			print('request-data', request_data)
+			data = schema.load_object_into_schema(request_data, partial=True)
 		project.update_(**data)
 		return response('success', message=success_messages['updated'].format('Project'), data=schema.dump(project).data, status_code=200)
 

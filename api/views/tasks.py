@@ -33,6 +33,10 @@ class TaskResource(Resource):
 			raise ValidationError({
 				"message": serialization_messages['exists'].format('Task with title')
 			}, 409)
+		if not check_date_difference(formatted_date, project.due_date):
+			raise ValidationError({
+				"message": "Tasks cannot be created under this project because of dat difference"
+			}, 401)
 		assignee_list = check_assignee(data.get('task_assignees'), project.assignees)
 		if assignee_list is not None:
 			user_list = assign_user(assignee_list)
@@ -40,17 +44,16 @@ class TaskResource(Resource):
 		else:
 			data['task_assignees'] = []
 		print(data['task_assignees'], '+++++++++++')
-		if not check_date_difference(formatted_date, project.due_date):
-			raise ValidationError({
-				"message": "Tasks cannot be created under this project because of dat difference"
-			}, 401)
+		print(data['task_assignees'], '8888888>>>>>')
+		assignee_ids = data['task_assignees'] if data['task_assignees'] is not None else []
+		del data['task_assignees']
 		task_data = schema.load_object_into_schema(data)
 
 		task = Task()
 		task.title = data['title']
 		task.description = data['description']
 		task.due_date = data['due_date']
-		task.task_assignees = data['task_assignees']
+		task.task_assignees = assignee_ids
 		task.project_id = project.id
 		print(project.assignees, '====>>>')
 		task.save()
@@ -77,8 +80,8 @@ class TaskResource(Resource):
 
 #
 #
-@flask_api.route('/projects/<int:task_id>')
-class SingleProjectResource(Resource):
+@flask_api.route('/tasks/<int:task_id>')
+class SingleTaskResource(Resource):
 	""" Resource for single Task"""
 
 	@jwt_required
@@ -86,11 +89,23 @@ class SingleProjectResource(Resource):
 		""" Endpoint to update task"""
 		request_data = request.get_json()
 		user = get_jwt_identity()
-		task = Task.get(task_id)
-
+		task = Task.get_or_404(task_id)
 		schema = TaskSchema(context={'id': task_id})
-		data = schema.load_object_into_schema(request_data, partial=True)
-		task.update_(**data)
+
+		if 'task_assignees' in request_data:
+			project = Project.get_or_404(task.project_id)
+			assignee_list = check_assignee(request_data.get('task_assignees'), project.assignees)
+			if assignee_list is not None:
+				user_list = assign_user(assignee_list)
+				assignees = user_list if user_list is not None else []
+				del request_data['task_assignees']
+				data = schema.load_object_into_schema(request_data, partial=True)
+				data['task_assignees'] = assignees
+				print('i got here', data)
+				task.update_(**data)
+		else:
+			data = schema.load_object_into_schema(request_data, partial=True)
+			task.update_(**data)
 		return response('success', message=success_messages['updated'].format('Task'),
 						data=schema.dump(task).data, status_code=200)
 

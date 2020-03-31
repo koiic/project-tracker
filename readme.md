@@ -18,7 +18,18 @@ The **Project Tracker application** keeps tracks of users tasks based on priorit
  * Docker
  * SQLALCHEMY
  * MARSHMALLOW
-    
+  
+ ## Implementation Details
+ 1. Managing project
+    - creating a new project
+        - url : http://localhost:5000/api/v1/5000/projects
+        - example request data 
+        - `{
+            "title":"mevron 1003",
+             "description": "user authentication",
+             "due_date": "2020-07-23 00:00:00",
+              "assignees": []
+	     }`
 
 
 ## Set Up Development With Docker 

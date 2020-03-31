@@ -18,7 +18,7 @@ class TaskSchema(BaseSchema):
 		dump_to="projectId")
 
 	task_assignees = fields.List(fields.Nested(
-		UserSchema
+		UserSchema, dump_to="task_assignees", dump_only=True
 	))
 
 	due_date = fields.DateTime(dump_to="dueDate", load_from="due_date")

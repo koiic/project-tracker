@@ -16,11 +16,11 @@ class ProjectSchema(BaseSchema):
 
     tasks = fields.List(fields.Nested(
         TaskSchema,
-        only=['title', 'description', "due_date"],
+        only=['title', 'description', "due_date", "id"],
         dump_to='tasks'))
 
     assignees = fields.List(fields.Nested(
-        UserSchema, only=['email', 'id', 'name'], load_from="assignees"))
+        UserSchema, only=['email', 'id', 'name'], dump_to="assignees", dump_only=True))
 
     due_date = fields.DateTime(dump_to="dueDate", load_from="due_date")
     # created_by = fields.Int(

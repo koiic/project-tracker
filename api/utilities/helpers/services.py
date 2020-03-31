@@ -22,20 +22,20 @@ def assign_user(user_list):
 		return users
 
 
-def check_assignee(task_owners, project_assignee):
-	user_ids = []
-	for user in project_assignee:
-		user_ids.append(user.id)
+def check_assignee(task_assignees, project_assignee):
+	project_user_ids = []
 	assignee_list = []
-	if user_ids and len(user_ids) > 0:
-		for assignee in task_owners:
-			if assignee not in user_ids:
-				task_owners.remove(assignee)
+	for user in project_assignee:
+		project_user_ids.append(user.id)
+	if project_user_ids and len(project_user_ids) > 0:
+		for assignee in task_assignees:
+			if assignee not in project_user_ids:
+				task_assignees.remove(assignee)
 			else:
 				assignee_list.append(assignee)
 		return assignee_list
 	else:
-		return None
+		return []
 
 
 def check_date_difference(task_due_date, project_due_date):
