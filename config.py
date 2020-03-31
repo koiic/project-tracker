@@ -28,7 +28,8 @@ class StagingConfig(Config):
 
 class ProductionConfig(Config):
     """App production configuration"""
-
+    JWT_SECRET_KEY = getenv("JWT_SECRET_KEY")
+    FLASK_ENV = 'production'
     pass
 
 
