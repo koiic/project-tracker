@@ -1,2 +1,2 @@
-web: gunicorn manage:create_app
+web: gunicorn manage:app
 release:  python manage.py db upgrade
